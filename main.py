@@ -8,7 +8,9 @@ from gemini_utilities import (load_gemini_pro_model,
                             gemini_pro_response,
                             gemini_pro_vision_response,
                             embeddings_model_response)
-
+from pdfProcessor import (  get_pdf_text,
+                            get_text_chunks,
+                            get_vector_store)
 
 working_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -23,8 +25,9 @@ with st.sidebar:
                            ['ChatBot',
                             'Image Captioning',
                             'Embed text',
+                            'Process PDF'
                             'Ask me anything'],
-                           menu_icon='robot', icons=['chat-dots-fill', 'image-fill', 'textarea-t', 'patch-question-fill'],
+                           menu_icon='robot', icons=['chat-dots-fill', 'image-fill', 'textarea-t', 'file-pdf-fill', 'patch-question-fill'],
                            default_index=0
                            )
 
@@ -104,6 +107,17 @@ if selected == "Embed text":
         response = embeddings_model_response(user_prompt)
         st.markdown(response)
 
+# multiple pdf processing
+if selected == 'Process PDF':
+    st.title("📁 PDF Processing")
+    pdf_docs = st.file_uploader("Upload your PDF Files and Click on the Submit & Process Button",
+                                accept_multiple_files=True)
+    if st.button("Submit & Process"):
+        with st.spinner("Processing..."):
+            raw_text = get_pdf_text(pdf_docs)
+            text_chunks = get_text_chunks(raw_text)
+            get_vector_store(text_chunks)
+            st.success("Done")
 
 # text embedding model
 if selected == "Ask me anything":
