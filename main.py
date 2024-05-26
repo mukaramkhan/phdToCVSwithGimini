@@ -25,7 +25,7 @@ with st.sidebar:
                            ['ChatBot',
                             'Image Captioning',
                             'Embed text',
-                            'Process PDF'
+                            'Process PDF',
                             'Ask me anything'],
                            menu_icon='robot', icons=['chat-dots-fill', 'image-fill', 'textarea-t', 'file-pdf-fill', 'patch-question-fill'],
                            default_index=0
